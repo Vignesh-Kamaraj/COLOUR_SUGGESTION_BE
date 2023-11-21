@@ -7,7 +7,7 @@ router.get("/login/:id", Auth.validate, UserController.getUserById);
 router.post("/signup", UserController.create);
 router.put("/:id", UserController.editUserById);
 router.put("/login/:id", Auth.validate, UserController.addUserdetailsById);
-router.delete("/delete/:id", UserController.deleteUserById);
+router.put("/delete/:id", UserController.deleteUserById);
 router.post("/login", UserController.login);
 router.post("/forgetPassword", UserController.forgetPassword);
 router.post("/resetPassword", UserController.resetPassword);

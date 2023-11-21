@@ -97,6 +97,8 @@ const addUserdetailsById = async (req, res) => {
 const deleteUserById = async (req, res) => {
   try {
     let user = await userModel.findOne({ _id: req.params.id });
+    console.log("u",user.password)
+    console.log("b",req.body.password)
     if (user) {
       let hashCompare = await Auth.hashCompare(
         req.body.password,
