@@ -98,9 +98,19 @@ const deleteUserById = async (req, res) => {
   try {
     let user = await userModel.findOne({ _id: req.params.id });
     if (user) {
+      let hashCompare = await Auth.hashCompare(
+        req.body.password,
+        user.password
+      )
+      if(hashCompare){
       await userModel.deleteOne({ _id: req.params.id });
       res.status(200).send({ message: "User Deleted Successfully" });
-    } else {
+    } 
+    else{
+      res.send({ message: "Invalid password" });
+    }
+  }
+  else {
       res.status(400).send({ message: "Invalid User" });
     }
   } catch (error) {
