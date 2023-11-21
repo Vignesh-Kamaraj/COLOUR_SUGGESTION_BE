@@ -19,7 +19,7 @@ const userSchema = new mongoose.Schema(
     bagcolor: { type: Array, default: "" },
     shoecolor: { type: Array, default: "" },
     dresscolor: { type: Array, default: "" },
-    recentColors: { type: Array, default: "" },
+    recentColors: { type: Array},
     value: { type: Array, default: "" },
   },
   {
