@@ -45,20 +45,20 @@ const editUserById = async (req, res) => {
   try {
     let user = await userModel.findOne({ _id: req.params.id });
     if (user) {
-      let { firstName, lastName, email, password } = req.body;
-      user.firstName = firstName ? firstName : user.firstName;
-      user.lastName = lastName ? lastName : user.lastName;
-      user.email = email ? email : user.email;
-      req.body.password = await Auth.hashPassword(req.body.password);
-
-      req.body.newpassword = await Auth.hashPassword(req.body.newpassword);
-      user.password = req.body.password;
-
-      await user.save();
-
-      res.status(200).send({
-        message: "User Data Saved",
-      });
+      let {newpassword, password } = req.body;
+      let hashCompare = await Auth.hashCompare(
+        req.body.password,
+        user.password
+      )
+      if(hashCompare){
+        req.body.newpassword = await Auth.hashPassword(req.body.newpassword);
+        user.password = req.body.newpassword;
+        await user.save();
+      res.status(200).send({ message: "Password changed Successfully" });
+    } 
+    else{
+      res.send({message:" Existing Password is wrong"})
+    }
     } else {
       res.status(400).send({ message: "Invalid User" });
     }
@@ -97,8 +97,6 @@ const addUserdetailsById = async (req, res) => {
 const deleteUserById = async (req, res) => {
   try {
     let user = await userModel.findOne({ _id: req.params.id });
-    console.log("u",user.password)
-    console.log("b",req.body.password)
     if (user) {
       let hashCompare = await Auth.hashCompare(
         req.body.password,
